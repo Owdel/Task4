@@ -1,2 +1,69 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+
+public class HardwareRepository {
+
+    public void fetchAllHardware() {
+        String databaseUrl = "jdbc:sqlite:C:/Users/Owdel/Documents/Data base/Hardware";
+        String selectAllHardwareQuery = "SELECT id, brand, spec, type FROM tb1_Hardware";
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Connection connection = DriverManager.getConnection(databaseUrl);
+            Statement queryStatement = connection.createStatement();
+            ResultSet queryResults = queryStatement.executeQuery(selectAllHardwareQuery);
+
+            while (queryResults.next()) {
+                int    hardwareId   = queryResults.getInt("id");
+                String brandName    = queryResults.getString("brand");
+                int    specValue    = queryResults.getInt("spec");
+                String hardwareType = queryResults.getString("type");
+
+                if (hardwareType.equalsIgnoreCase("Laptop")) {
+                    Laptop laptop = new Laptop(hardwareId, brandName, specValue);
+                    System.out.println(laptop);
+                } else if (hardwareType.equalsIgnoreCase("Phone")) {
+                    Phone phone = new Phone(hardwareId, brandName, specValue);
+                    System.out.println(phone);
+                }
+            }
+
+        } catch (SQLException databaseException) {
+            System.err.println("Database error: " + databaseException.getMessage());
+        } catch (ClassNotFoundException driverException) {
+            System.err.println("SQLite driver not found: " + driverException.getMessage());
+        }
+    }
+
+    public void fetchInventoryCount() {
+    String databaseUrl = "jdbc:sqlite:C:/Users/Owdel/Documents/Data base/Hardware";  // ← must be here
+    String selectAllHardwareQuery = "SELECT spec, type FROM tb1_Hardware";
+
+    int totalSixteenGbLaptops     = 0;
+    int totalThirtyTwoGbLaptops   = 0;
+    int totalFiftyMegapixelPhones = 0;
+
+    try {
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection(databaseUrl);
+        Statement queryStatement = connection.createStatement();
+        ResultSet queryResults = queryStatement.executeQuery(selectAllHardwareQuery);
+
+        while (queryResults.next()) {
+            int    specValue    = queryResults.getInt("spec");
+            String hardwareType = queryResults.getString("type");
+
+            if      (hardwareType.equalsIgnoreCase("Laptop") && specValue == 16) totalSixteenGbLaptops++;
+            else if (hardwareType.equalsIgnoreCase("Laptop") && specValue == 32) totalThirtyTwoGbLaptops++;
+            else if (hardwareType.equalsIgnoreCase("Phone")  && specValue == 50) totalFiftyMegapixelPhones++;
+        }
+
+        System.out.println("Total 16GB Laptops : " + totalSixteenGbLaptops);
+        System.out.println("Total 32GB Laptops : " + totalThirtyTwoGbLaptops);
+        System.out.println("Total 50MP Phones  : " + totalFiftyMegapixelPhones);
+
+    } catch (SQLException databaseException) {
+        System.err.println("Database error: " + databaseException.getMessage());
+    } catch (ClassNotFoundException driverException) {
+        System.err.println("SQLite driver not found: " + driverException.getMessage());
+    }
+}
+}
