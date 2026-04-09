@@ -1,2 +1,13 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+public class Phone extends Hardware{
+
+    public Phone(int hardwareld, String brandName, int specValue)
+    {
+        super(hardweld, brandName, specValue);
+    }
+
+    publicString getSpecDescription(){
+        return getSpecValue()+"Megapixels";
+    }
+}
