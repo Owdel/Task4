@@ -1,2 +1,13 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+public class Laptop extends Hardware{
+
+    public Laptop(int hardwareld, String brandName, int specValue){
+        
+        super(hardwareld, brandName, specValue);
+    }
+
+    public String getSpecDescription(){
+        return getSpecValue()+"GB RAM";
+    }
+}
